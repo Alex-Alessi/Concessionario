@@ -296,6 +296,30 @@
     padding-top: 0.5rem;
 }
 
+.prezzo-wrapper {
+    position: relative;
+}
+
+.prezzo-wrapper input {
+    padding-left: 20px;
+}
+
+.prezzo-wrapper::before {
+    content: '€';
+    position: absolute;
+    left: 6px;
+    top: 68%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    margin-top: 1px;
+}
+
+.prezzo-wrapper.has-value::before {
+    opacity: 1;
+}
+
 .btn-filtra,
 .btn-reset {
     padding: 10px 24px;

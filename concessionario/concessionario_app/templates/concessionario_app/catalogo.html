@@ -29,11 +29,11 @@
                         <p>
                             {{ form.condizioni }}
                         </p>
-                        <p>
+                        <p class="prezzo-wrapper">
                             {{ form.prezzo_min.label_tag }}
                             {{ form.prezzo_min }}
                         </p>
-                        <p>
+                        <p class="prezzo-wrapper">
                             {{ form.prezzo_max.label_tag }}
                             {{ form.prezzo_max }}
                         </p>
@@ -56,6 +56,17 @@
         toggle.addEventListener("click", () => {
             wrapper.classList.toggle("aperto");
             layout.classList.toggle("aperto");
+        });
+
+        document.querySelectorAll('.prezzo-wrapper input').forEach(input => {
+            const wrapper = input.closest('.prezzo-wrapper');
+
+            function toggleEuro() {
+                wrapper.classList.toggle('has-value', input.value.trim() !== '');
+            }
+
+            input.addEventListener('input', toggleEuro);
+            toggleEuro();
         });
 
     </script>

@@ -13,7 +13,7 @@ class AutoForm(forms.ModelForm):
         exclude = ['created_by', 'created_at']
 
 class FiltriCatalogoForm(forms.Form):
-    marca = forms.CharField(required=False, max_length=50, label="Cerca marca")
+    marca = forms.CharField(required=False, max_length=50, label="Cerca marca", widget=forms.TextInput(attrs={'placeholder': 'Inserisci la marca'}))
     categoria = forms.ChoiceField(required=False, choices=[('', 'Categoria')] + CATEGORIA_CHOICES, label="Categoria" )
     alimentazione = forms.ChoiceField(required=False, choices=[('', 'Alimentazione')] + ALIMENTAZIONE_CHOICES, label="Alimentazione" )
     condizioni = forms.ChoiceField(required=False, choices=[('', 'Condizione')] + CONDIZIONI_CHOICES, label="Condizione")

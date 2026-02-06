@@ -74,59 +74,296 @@
   border-radius: 6px;
 }
 
-/* FILTRI */
-fieldset {
-    border-radius: 8px;
-    padding: 0;
-    transition: all 1.5s ease;
-    width: fit-content;
-    min-width: 120px;
-    overflow: hidden;
+/* FILTRI - EFFETTO GOCCIA */
+
+.layout-on-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    padding: 2rem;
+    position: relative;
+    transition: margin-bottom 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-fieldset.aperto {
-    width: 99.8%;
+/* Spazio dinamico quando i filtri sono aperti */
+.layout-on-top.aperto {
+    margin-bottom: 250px; /* Regola questo valore in base all'altezza dei tuoi filtri */
 }
 
-legend {
-    cursor: pointer;
-    padding: 8px 16px;
-    font-weight: 600;
-    user-select: none;
-    transition: all 0.3s ease;
+.welcome-text {
     margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #111;
+    justify-self: start;
 }
 
-legend:hover {
+.filtri-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+}
+
+/* Bottone Filtri - sempre visibile e centrato */
+.filtri-toggle {
+    cursor: pointer;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+    user-select: none;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    border-radius: 16px;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 10;
+}
+
+.filtri-toggle:hover {
     color: #0066ff;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 12px -2px rgba(0, 0, 0, 0.1),
+        0 4px 6px -1px rgba(0, 0, 0, 0.06);
+}
+
+.filtri-toggle span {
+    display: inline-block;
+}
+
+/* Dropdown che si espande come una goccia */
+.filtri-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: top center;
+    z-index: 5;
+}
+
+/* Effetto goccia che si stacca */
+.filtri-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    width: 16px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 50%;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.filtri-wrapper.aperto .filtri-dropdown::before {
+    transform: translateX(-50%) scale(1);
+    transition-delay: 0.1s;
+}
+
+/* Container principale quando aperto */
+.filtri-wrapper.aperto .filtri-dropdown {
+    width: 900px;
+    height: auto;
+    opacity: 1;
+    pointer-events: all;
+    transition: 
+        width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s,
+        height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s,
+        opacity 0.6s ease 0.5s;
+}
+
+.filtri-form {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    border-radius: 20px;
+    box-shadow: 
+        0 10px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    transform: scale(0);
+    transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.filtri-wrapper.aperto .filtri-form {
+    transform: scale(1);
+    transition-delay: 0.4s;
 }
 
 .contenuto-filtri {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding: 0 1rem;
-    max-height: 0;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 2rem;
     opacity: 0;
-    overflow: hidden;
-    transition:
-        max-height 0.4s ease,
-        opacity 0.4s ease,
-        padding 0.4s ease;
+    transform: translateY(-10px);
+    transition: 
+        opacity 0.5s ease,
+        transform 0.5s ease;
 }
 
-.filtri.aperto .contenuto-filtri {
-    max-height: 300px;
+.filtri-wrapper.aperto .contenuto-filtri {
     opacity: 1;
-    padding: 1rem;
+    transform: translateY(0);
+    transition-delay: 0.7s;
+}
+
+.contenuto-filtri p {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 180px;
+}
+
+.contenuto-filtri label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
 }
 
 
-fieldset:not(.aperto) {
-    height: auto;
-    width: 0px;
+.contenuto-filtri select,
+.contenuto-filtri input[type="text"],
+.contenuto-filtri input[type="number"] {
+    padding: 10px 14px;
+    border: 1px solid rgba(209, 213, 219, 0.5);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    height: 42px;
+    min-width: 180px;
+    box-sizing: border-box;
 }
+
+.contenuto-filtri select:focus,
+.contenuto-filtri input[type="text"]:focus,
+.contenuto-filtri input[type="number"]:focus {
+    outline: none;
+    border-color: #0066ff;
+    box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+    background: white;
+}
+
+
+.contenuto-filtri p {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 180px;
+    flex: 1;
+}
+
+.contenuto-filtri select:focus,
+.contenuto-filtri input:focus {
+    outline: none;
+    border-color: #0066ff;
+    box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+    background: white;
+}
+
+.filtri-actions {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+}
+
+.btn-filtra,
+.btn-reset {
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+}
+
+.btn-filtra {
+    background: #0066ff;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.btn-filtra:hover {
+    background: #0052cc;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 102, 255, 0.4);
+}
+
+.btn-filtra:active {
+    transform: translateY(0);
+}
+
+.btn-reset {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+    border: 1px solid rgba(209, 213, 219, 0.5);
+}
+
+.btn-reset:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.btn-reset:active {
+    transform: translateY(0);
+}
+
+/* Effetto quando si apre */
+.filtri-form::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    transition: left 0.8s ease;
+    pointer-events: none;
+}
+
+.filtri-wrapper.aperto .filtri-form::after {
+    left: 100%;
+    transition-delay: 0.5s;
+}
+
+
 
 /* CAROUSEL STYLE */
 .carousel {
@@ -535,6 +772,36 @@ fieldset:not(.aperto) {
     .modern-carousel-item-info .car-price {
         font-size: 1.2rem;
     }
+
+    .layout-on-top {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .layout-on-top.aperto {
+        margin-bottom: 350px;
+    }
+    
+    .welcome-text {
+        justify-self: center;
+        text-align: center;
+    }
+    
+    .filtri-wrapper {
+        justify-self: center;
+    }
+    
+    .filtri-wrapper.aperto .filtri-dropdown {
+        width: 95vw;
+    }
+    
+    .contenuto-filtri {
+        flex-direction: column;
+    }
+    
+    .contenuto-filtri p {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -551,6 +818,8 @@ fieldset:not(.aperto) {
         font-size: 1.6rem;
     }
 }
+
+
 
 
 

@@ -1,70 +1,70 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %} Catalogo Auto {% endblock %}
 {% block content %}
-    {% if user.is_authenticated %}
-        <h1>Benvenuto {{user.username}}!</h1>
-    {% else %}
-        <h1>Benvenuto al concessionario!</h1>
-    {% endif %}
-
-    <form method="get" class="filtri">
-        <fieldset>
-            <legend id="toggle-filtri">Filtri</legend>
-
-            <div class="contenuto-filtri">
-                <p>
-                    {{ form.marca.label_tag }}
-                    {{ form.marca }}
-                </p>
-
-                <p>
-                    {{ form.categoria }}
-                </p>
-
-                <p>
-                    {{ form.alimentazione }}
-                </p>
-
-                <p>
-                    {{ form.condizioni }}
-                </p>
-
-                <p>
-                    {{ form.prezzo_min.label_tag }}
-                    {{ form.prezzo_min }}
-                </p>
-
-                <p>
-                    {{ form.prezzo_max.label_tag }}
-                    {{ form.prezzo_max }}
-                </p>
-                <div>
-                    <button type="submit">Filtra</button>
-                    <button><a href="{% url 'catalogo' %}"> Reset </a></button>
-                </div>
-            </div>
-        </fieldset>
-    </form>
-
-    <script>
-        const legend = document.getElementById("toggle-filtri");
-        const fieldset = legend.closest("fieldset");
-        const form = document.querySelector(".filtri");
+    <div class="layout-on-top">
+        {% if user.is_authenticated %}
+            <h1 class="welcome-text">Benvenuto {{user.username}}!</h1>
+        {% else %}
+            <h1 class="welcome-text">Benvenuto al concessionario!</h1>
+        {% endif %}
         
-        legend.addEventListener("click", () => {
-            form.classList.toggle("aperto");
-            fieldset.classList.toggle("aperto");
+        <div class="filtri-wrapper">
+            <div class="filtri-toggle" id="toggle-filtri">
+                <span>Filtri</span>
+            </div>
+            
+            <div class="filtri-dropdown">
+                <form method="get" class="filtri-form">
+                    <div class="contenuto-filtri">
+                        <p>
+                            {{ form.marca }}
+                        </p>
+                        <p>
+                            {{ form.categoria }}
+                        </p>
+                        <p>
+                            {{ form.alimentazione }}
+                        </p>
+                        <p>
+                            {{ form.condizioni }}
+                        </p>
+                        <p>
+                            {{ form.prezzo_min.label_tag }}
+                            {{ form.prezzo_min }}
+                        </p>
+                        <p>
+                            {{ form.prezzo_max.label_tag }}
+                            {{ form.prezzo_max }}
+                        </p>
+                        <div class="filtri-actions">
+                            <button type="submit" class="btn-filtra">Filtra</button>
+                            <a href="{% url 'catalogo' %}" class="btn-reset">Reset</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const toggle = document.getElementById("toggle-filtri");
+        const dropdown = document.querySelector(".filtri-dropdown");
+        const wrapper = document.querySelector(".filtri-wrapper");
+        const layout = document.querySelector(".layout-on-top");
+    
+        toggle.addEventListener("click", () => {
+            wrapper.classList.toggle("aperto");
+            layout.classList.toggle("aperto");
         });
-    </script>
 
+    </script>
+    
     <h2>
         <a href="?order={{ next_order }}" style="text-decoration: none; color: inherit; cursor: pointer;">
             Auto ordinate per: {{ order_label }}
         </a>
     </h2>
-
     {% if nuove %}
     <div class="carousel">
         <div class="carousel__inner">
@@ -91,11 +91,9 @@
             </div>
             {% endfor %}
         </div>
-
         <button type="button" class="carousel__control carousel__control--left">
             <i class="fa fa-angle-left"></i>
         </button>
-
         <button type="button" class="carousel__control carousel__control--right">
             <i class="fa fa-angle-right"></i>
         </button>
@@ -103,11 +101,6 @@
     {% else %}
     <p>Nessuna auto disponibile al momento.</p>
     {% endif %}
-
-
     <h2>Le più amate</h2>
     {% include "concessionario_app/carousel_preferite.html" %}
-
-
 {% endblock %}
-

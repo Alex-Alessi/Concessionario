@@ -1,0 +1,564 @@
+/* NAVBAR */
+.navbar {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: -webkit-fill-available;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+}
+
+/* LOGO */
+.nav-left {
+  flex: 1;
+}
+
+.nav-logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #111;
+}
+
+/* MENU PRINCIPALE */
+.nav-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: large;
+}
+
+.nav-center a:hover {
+  color: #0066ff;
+}
+
+/* AZIONI */
+.nav-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-right a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #333;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: #0066ff;
+  color: #fff !important;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+.btn-outline {
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+/* FILTRI */
+fieldset {
+    border-radius: 8px;
+    padding: 0;
+    transition: all 1.5s ease;
+    width: fit-content;
+    min-width: 120px;
+    overflow: hidden;
+}
+
+fieldset.aperto {
+    width: 99.8%;
+}
+
+legend {
+    cursor: pointer;
+    padding: 8px 16px;
+    font-weight: 600;
+    user-select: none;
+    transition: all 0.3s ease;
+    margin: 0;
+}
+
+legend:hover {
+    color: #0066ff;
+}
+
+.contenuto-filtri {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+        max-height 0.4s ease,
+        opacity 0.4s ease,
+        padding 0.4s ease;
+}
+
+.filtri.aperto .contenuto-filtri {
+    max-height: 300px;
+    opacity: 1;
+    padding: 1rem;
+}
+
+
+fieldset:not(.aperto) {
+    height: auto;
+    width: 0px;
+}
+
+/* CAROUSEL STYLE */
+.carousel {
+  position: relative;
+  overflow-x: hidden;
+  margin: 40px auto;
+  padding: 50px 0;
+  height: 300px; /* puoi adattare in base alle immagini */
+  width: 90%; /* responsive */
+}
+
+.carousel .carousel__inner {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.carousel .carousel__box {
+  position: relative;
+  width: 250px; 
+  height: 300px;
+  background: #ddd;
+  border-radius: 8px;
+  flex-shrink: 0;
+  margin-right: 20px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.carousel .carousel__box img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.carousel .carousel__box p {
+  margin: 5px 0;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.carousel .carousel__box form button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #0066ff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.carousel .carousel__control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 50px;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  height: 45px;
+  border-radius: 10px;
+}
+
+.carousel__control--left {
+  left: 0;
+}
+
+.carousel__control--right {
+  right: 0;
+}
+
+
+/* CAROUSEL PREFERITE */
+
+.modern-carousel-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 40px 20px;
+}
+
+.modern-carousel-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+.modern-carousel-counter {
+    font-size: 1.8rem;
+    color: #999;
+    font-weight: 300;
+}
+
+.modern-carousel-counter .current {
+    color: #333;
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+.modern-carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 60px 0;
+    display: flex;
+}
+
+.modern-carousel-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 30px;
+    padding: 0 calc(50% - 200px);
+    justify-content: center;
+}
+
+.modern-carousel-item {
+    flex-shrink: 0;
+    width: 400px;
+    height: 500px;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.modern-carousel-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-decoration: none;
+}
+
+.modern-carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.modern-carousel-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+}
+
+.modern-carousel-item-title {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+    text-transform: lowercase;
+}
+
+/* Effetto sfocatura e ridimensionamento per item non attivi */
+.modern-carousel-item:not(.active) {
+    transform: scale(0.75);
+    filter: brightness(0.6);
+    opacity: 0.5;
+}
+
+.modern-carousel-item.active {
+    transform: scale(1);
+    filter: brightness(1);
+    opacity: 1;
+    z-index: 10;
+}
+
+.modern-carousel-item.active img {
+    transform: scale(1.05);
+}
+
+/* Info auto */
+.modern-carousel-item-info {
+    position: absolute;
+    bottom: 13px;
+    left: 30px;
+    color: white;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.modern-carousel-item.active .modern-carousel-item-info {
+    opacity: 10;
+}
+
+.modern-carousel-item-info .car-brand {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 2px;
+    margin: 0 0 5px 0;
+    
+}
+
+.modern-carousel-item-info .car-price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    
+}
+
+.modern-carousel-item-info p{
+  color: white;
+  text-shadow: 3px 2px 5px rgba(0,0,0,0.7);
+}
+
+/* Cuori e preferiti */
+.modern-carousel-likes {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.modern-carousel-item.active .modern-carousel-likes {
+    opacity: 1;
+}
+
+.modern-carousel-likes .heart-icon {
+    font-size: 1.2rem;
+}
+
+.modern-carousel-likes .likes-count {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Controlli */
+.modern-carousel-controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: -webkit-fill-available;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    pointer-events: none;
+}
+
+.modern-carousel-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    pointer-events: all;
+    font-size: 2rem;
+    color: #333;
+    font-weight: 300;
+}
+
+.modern-carousel-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background: #0066ff;
+    color: white;
+}
+
+.modern-carousel-btn:active {
+    transform: scale(0.95);
+}
+
+/* Indicatori */
+.modern-carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+}
+
+.modern-indicator {
+    width: 40px;
+    height: 4px;
+    background: #ccc;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modern-indicator.active {
+    background: #333;
+    width: 60px;
+}
+
+.modern-indicator:hover {
+    background: #999;
+}
+
+
+/* MESSAGGI */
+
+.message {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.message.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .modern-carousel-item {
+        width: 350px;
+        height: 450px;
+    }
+
+    .modern-carousel-track {
+        padding: 0 calc(50% - 175px);
+    }
+
+    .modern-carousel-item-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-center {
+        display: none; 
+    }
+
+    .modern-carousel-item {
+        width: 280px;
+        height: 380px;
+    }
+
+    .modern-carousel-track {
+        padding: 0 calc(50% - 140px);
+        gap: 20px;
+    }
+
+    .modern-carousel-item-title {
+        font-size: 2rem;
+        bottom: 60px;
+    }
+
+    .modern-carousel-counter {
+        font-size: 1.4rem;
+    }
+
+    .modern-carousel-counter .current {
+        font-size: 1.6rem;
+    }
+
+    .modern-carousel-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .modern-carousel-item-info .car-brand {
+        font-size: 0.8rem;
+    }
+
+    .modern-carousel-item-info .car-model {
+        font-size: 1rem;
+    }
+
+    .modern-carousel-item-info .car-price {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modern-carousel-item {
+        width: 240px;
+        height: 340px;
+    }
+
+    .modern-carousel-track {
+        padding: 0 calc(50% - 120px);
+    }
+
+    .modern-carousel-item-title {
+        font-size: 1.6rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

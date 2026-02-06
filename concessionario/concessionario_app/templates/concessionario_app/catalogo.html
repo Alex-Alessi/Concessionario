@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Catalogo Auto {% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <h1>Benvenuto {{user.username}}!</h1>
+    {% else %}
+        <h1>Benvenuto al concessionario!</h1>
+    {% endif %}
+
+    <form method="get" class="filtri">
+        <fieldset>
+            <legend id="toggle-filtri">Filtri</legend>
+
+            <div class="contenuto-filtri">
+                <p>
+                    {{ form.marca.label_tag }}
+                    {{ form.marca }}
+                </p>
+
+                <p>
+                    {{ form.categoria }}
+                </p>
+
+                <p>
+                    {{ form.alimentazione }}
+                </p>
+
+                <p>
+                    {{ form.condizioni }}
+                </p>
+
+                <p>
+                    {{ form.prezzo_min.label_tag }}
+                    {{ form.prezzo_min }}
+                </p>
+
+                <p>
+                    {{ form.prezzo_max.label_tag }}
+                    {{ form.prezzo_max }}
+                </p>
+                <div>
+                    <button type="submit">Filtra</button>
+                    <button><a href="{% url 'catalogo' %}"> Reset </a></button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <script>
+        const legend = document.getElementById("toggle-filtri");
+        const fieldset = legend.closest("fieldset");
+        const form = document.querySelector(".filtri");
+        
+        legend.addEventListener("click", () => {
+            form.classList.toggle("aperto");
+            fieldset.classList.toggle("aperto");
+        });
+    </script>
+
+    <h2>
+        <a href="?order={{ next_order }}" style="text-decoration: none; color: inherit; cursor: pointer;">
+            Auto ordinate per: {{ order_label }}
+        </a>
+    </h2>
+
+    {% if nuove %}
+    <div class="carousel">
+        <div class="carousel__inner">
+            {% for a in nuove %}
+            <div class="carousel__box">
+                <a href="{% url 'dettaglio_auto' a.pk %}">
+                    {% if a.foto_set.first %}
+                        <img src="{{ a.foto_set.first.foto.url }}" alt="{{ a.marca }} {{ a.modello }}">
+                    {% else %}
+                        <p>📷 Nessuna foto</p>
+                    {% endif %}
+                </a>
+                <p>{{ a.marca }} {{ a.modello }} - €{{ a.prezzo }}</p>
+                <form method="post" action="{% url 'toggle_preferito' a.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">
+                        {% if a.pk in preferiti_ids %}
+                            ❤️
+                        {% else %}
+                            🤍
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="button" class="carousel__control carousel__control--left">
+            <i class="fa fa-angle-left"></i>
+        </button>
+
+        <button type="button" class="carousel__control carousel__control--right">
+            <i class="fa fa-angle-right"></i>
+        </button>
+    </div>
+    {% else %}
+    <p>Nessuna auto disponibile al momento.</p>
+    {% endif %}
+
+
+    <h2>Le più amate</h2>
+    {% include "concessionario_app/carousel_preferite.html" %}
+
+
+{% endblock %}
+

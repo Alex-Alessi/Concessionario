@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block title %}{{auto.marca}} {{auto.modello}}{% endblock %}
+
+{% block content %}
+<h1>{{auto.marca}} {{auto.modello}}</h1>
+{% if auto.foto_set.all %}
+    <div class="galleria">
+        {% for foto in auto.foto_set.all %}
+            <img src="{{ foto.foto.url }}" width="300">
+        {% endfor %}
+    </div>
+{% endif %}
+    <ul>
+      {%for field in fields%} 
+        {% if field.name != 'id' and field.name != 'created_by' %} 
+          {%if field.name == 'prezzo' %}
+            <li>
+              <strong>{{field.verbose_name|capfirst}}:</strong> € {{auto|get_field_display:field.name}}
+            </li>
+          {%elif auto|attr:field.name == True %}
+          <li>
+            <strong>{{field.verbose_name|capfirst}}:</strong> ✔
+          </li>
+          {%elif auto|attr:field.name == False %}
+          <li>
+            <strong>{{field.verbose_name|capfirst}}:</strong> ✖
+          </li>
+          {%else%}
+          <li>
+            <strong>{{field.verbose_name|capfirst}}:</strong> {{auto|get_field_display:field.name}}
+          </li>
+          {%endif%} 
+        {%endif%} 
+      {%endfor%}
+      {% if user.is_authenticated and user.cliente %}
+      <form method="post" action="{% url 'toggle_preferito' auto.pk %}">
+        {% csrf_token %}
+        <button type="submit">
+          {% if is_preferito %}
+            ❤️ Rimuovi dai preferiti
+          {% else %}
+            🤍 Aggiungi ai preferiti
+          {% endif %}
+        </button>
+      </form>
+      {% endif %}
+      {% if user.is_authenticated and user.cliente and auto.disponibilita %}
+      <a href="{% url 'acquista_auto' auto.pk %}">
+        <button>🛒 Acquista</button>
+      </a>
+      {% endif %}
+      <a href="{% url 'catalogo' %}">Torna al catalogo</a>
+    </ul>
+    <hr>
+
+<h3>Richiedi informazioni</h3>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Invia richiesta</button>
+</form>
+
+
+{% endblock %}

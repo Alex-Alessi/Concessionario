@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Richieste Info{% endblock %}
+
+{% block content %}
+<h1>Richieste Info</h1>
+
+{% if richieste %}
+<table border="1">
+    <tr>
+        <th>Auto</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Messaggio</th>
+        <th>Data</th>
+        <th>Stato</th>
+        <th>Azioni</th>
+    </tr>
+
+    {% for r in richieste %}
+    <tr style="{% if not r.gestita %}background-color:#fff3cd{% endif %}">
+        <td>{{ r.auto.marca }} {{ r.auto.modello }}</td>
+        <td>{{ r.nome }}</td>
+        <td>
+            <a href="mailto:{{ r.email }}">{{ r.email }}</a>
+        </td>
+        <td>{{ r.messaggio }}</td>
+        <td>{{ r.created_at|date:"d/m/Y H:i" }}</td>
+        <td>
+            {% if r.gestita %}
+                ✅ Gestita
+            {% else %}
+                🟡 Nuova
+            {% endif %}
+        </td>
+        <td>
+            {% if not r.gestita %}
+                <a href="{% url 'segna_richiesta_gestita' r.pk %}">
+                    ✔ Segna come gestita
+                </a>
+            {% else %}
+                —
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Non ci sono richieste.</p>
+{% endif %}
+
+{% endblock %}

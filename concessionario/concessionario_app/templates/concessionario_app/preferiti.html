@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Preferiti{% endblock %}
+
+{% block content %}
+  <h1> I miei preferiti </h1>
+    {% if preferiti.exists %}
+    <ul>
+        {% for preferito in preferiti %}
+            <li> <a href="{% url 'dettaglio_auto' preferito.auto.pk %}"> {{preferito.auto.marca}} {{preferito.auto.modello}} </a> </li> 
+            <form method="post" action="{% url 'toggle_preferito' preferito.auto.pk %}">
+                {% csrf_token %}
+                <button type="submit">
+                    ❤️ Rimuovi dai preferiti  
+                </button>
+            </form>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h2> Non ci sono auto nei preferiti </h2>
+    {% endif %}
+    <a href="{% url 'catalogo' %}">Torna al catalogo</a>
+{% endblock %}

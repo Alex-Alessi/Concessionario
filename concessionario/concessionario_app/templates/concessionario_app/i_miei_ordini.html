@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}I miei ordini{% endblock %}
+
+{% block content %}
+<h1>I miei ordini</h1>
+    
+    {% if ordini.exists %}
+        <table border="1">
+            <tr>
+                <th>Data</th>
+                <th>Auto</th>
+                <th>Prezzo</th>
+                <th>Stato</th>
+                <th>Indirizzo consegna</th>
+            </tr>
+            {% for ordine in ordini %}
+            <tr>
+                <td>{{ ordine.data_acquisto|date:"d/m/Y H:i" }}</td>
+                <td>
+                    <a href="{% url 'dettaglio_auto' ordine.auto.pk %}">
+                        {{ ordine.auto.marca }} {{ ordine.auto.modello }}
+                    </a>
+                </td>
+                <td>€{{ ordine.prezzo }}</td>
+                <td>{{ ordine.get_stato_ordine_display }}</td>
+                <td>{{ ordine.indirizzo_consegna }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Non hai ancora effettuato ordini.</p>
+    {% endif %}
+    
+    <br>
+    <a href="{% url 'catalogo' %}">← Torna al catalogo</a>
+{% endblock %}

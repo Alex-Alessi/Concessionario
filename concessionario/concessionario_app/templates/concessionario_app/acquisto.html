@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Acquista {{ auto.marca }} {{ auto.modello }}{% endblock %}
+
+{% block content %}
+    <h1>Acquista {{ auto.marca }} {{ auto.modello }}</h1>
+    
+    <h2>Riepilogo:</h2>
+    <ul>
+        <li><strong>Auto:</strong> {{ auto.marca }} {{ auto.modello }}</li>
+        <li><strong>Prezzo:</strong> €{{ auto.prezzo }}</li>
+        <li><strong>Condizioni:</strong> {{ auto.get_condizioni_display }}</li>
+    </ul>
+    
+    <h2>Completa l'acquisto:</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">✅ Conferma acquisto</button>
+        <a href="{% url 'dettaglio_auto' auto.pk %}">❌ Annulla</a>
+    </form>
+{% endblock %}

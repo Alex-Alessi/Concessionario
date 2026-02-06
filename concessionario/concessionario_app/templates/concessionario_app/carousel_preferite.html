@@ -1,0 +1,47 @@
+{% if preferite %}
+    <div class="modern-carousel-container">
+        <div class="modern-carousel-header">
+            <div class="modern-carousel-counter">
+                <span class="current">01</span>/<span class="total">{{ preferite|length|stringformat:"02d" }}</span>
+            </div>
+        </div>
+
+        <div class="modern-carousel-wrapper">
+            <div class="modern-carousel-track" id="modernCarouselTrack">
+                {% for auto in preferite %}
+                <div class="modern-carousel-item {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}">
+                    <a href="{% url 'dettaglio_auto' auto.pk %}" class="modern-carousel-link">
+                        {% if auto.foto_set.first %}
+                            <img src="{{ auto.foto_set.first.foto.url }}" alt="{{ auto.marca }} {{ auto.modello }}">
+                        {% else %}
+                            <div class="modern-carousel-placeholder">
+                                <span>📷</span>
+                            </div>
+                        {% endif %}
+                        <div class="modern-carousel-item-info">
+                            <p class="car-brand">{{ auto.marca }} {{ auto.modello }}</p>
+                            <p class="car-price">€ {{ auto.prezzo|floatformat:2 }}</p>
+                        </div>
+                        <div class="modern-carousel-item-title">
+                            {{ auto.marca|lower }}
+                        </div>
+                        <div class="modern-carousel-likes">
+                            <span class="heart-icon">❤️</span>
+                            <span class="likes-count">{{ auto.num_preferiti }}</span>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="modern-carousel-controls">
+                <button class="modern-carousel-btn" id="modernPrevBtn">‹</button>
+                <button class="modern-carousel-btn" id="modernNextBtn">›</button>
+            </div>
+        </div>
+
+        <div class="modern-carousel-indicators" id="modernIndicators"></div>
+    </div>
+    {% else %}
+    <p>Nessuna auto tra le preferite al momento.</p>
+    {% endif %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Crea nuovo annuncio{% endblock %}
+
+{% block content %}
+  <h1>Crea nuovo annuncio</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %} 
+    
+    {{ form.non_field_errors }}
+    {{ formset.non_form_errors }}
+
+    <h2>Dati Auto</h2>
+    {{form.as_p}}
+    <h2>Foto (carica fino a 5 immagini)</h2>
+    {{ formset.management_form }}
+
+    {% for form_foto in formset %}
+      <div class="foto-form">
+        {{ form_foto.as_p }}
+      </div>
+    {% endfor %}
+     
+    <button type="submit">Crea annuncio</button>
+    <a href="{% url 'dashboard_vendite' %}">← Torna alla dashboard</a>
+  </form>
+{% endblock %}

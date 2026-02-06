@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Vendite{% endblock %}
+
+{% block content %}
+<h1>Dashboard Vendite</h1>
+    
+    <h2>Statistiche</h2>
+    <p>Totale auto: {{ totale }}</p>
+    <p>Disponibili: {{ disponibili }}</p>
+    <p>Vendute: {{ vendute }}</p>
+    
+    <a href="{% url 'crea_annuncio' %}">➕ Crea nuovo annuncio</a>
+    <a href="{% url 'richieste_info_dashboard' %}">
+    📩 Richieste
+    {% if non_gestite %}
+        <span style="
+            background:red;
+            color:white;
+            border-radius:50%;
+            padding:2px 6px;
+            font-size:12px;
+            margin-left:4px;
+        ">
+            {{ non_gestite }}
+        </span>
+    {% endif %}
+    </a>
+
+    
+    <h2>Tutte le auto</h2>
+    
+    {% if auto %}
+        <table border="1">
+            <tr>
+                <th>Auto</th>
+                <th>Prezzo</th>
+                <th>Stato</th>
+                <th>Azioni</th>
+            </tr>
+            {% for a in auto %}
+            <tr>
+                <td>{{ a.marca }} {{ a.modello }}</td>
+                <td>€{{ a.prezzo }}</td>
+                <td>
+                    {% if a.disponibilita %}
+                        ✅ Disponibile
+                    {% else %}
+                        ❌ Venduta
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'modifica_annuncio' a.pk %}">✏️ Modifica</a> |
+                    <a href="{% url 'elimina_annuncio' a.pk %}">🗑️ Elimina</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Non ci sono ancora vendite</p>
+    {% endif %}
+{% endblock %}

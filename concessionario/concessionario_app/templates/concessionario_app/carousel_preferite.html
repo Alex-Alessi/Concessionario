@@ -19,11 +19,15 @@
                             </div>
                         {% endif %}
                         <div class="modern-carousel-item-info">
-                            <p class="car-brand">{{ auto.marca }} {{ auto.modello }}</p>
-                            <p class="car-price">€ {{ auto.prezzo|floatformat:2 }}</p>
-                        </div>
-                        <div class="modern-carousel-item-title">
-                            {{ auto.marca|lower }}
+                            <div class="modern-carousel-item-text">
+                                <p class="car-brand">{{ auto.marca }} {{ auto.modello }}</p>
+                                <p class="car-price">€ {{ auto.prezzo|floatformat:2 }}</p>
+                            </div>
+                            {% if auto.get_logo %}
+                                <div class="modern-carousel-item-logo">
+                                    <img src="{{ auto.get_logo.url }}" alt="{{ auto.marca }}">
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="modern-carousel-likes">
                             <span class="heart-icon">❤️</span>

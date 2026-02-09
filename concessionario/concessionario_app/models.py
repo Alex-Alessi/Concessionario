@@ -85,6 +85,13 @@ class Auto(models.Model):
     created_at = models.DateField(auto_now_add=True)
     created_by = models.ForeignKey(Venditore, on_delete=models.CASCADE)
 
+    def get_logo(self):
+        try:
+            logo_marca = LogoMarca.objects.get(marca__iexact=self.marca)
+            return logo_marca.logo
+        except LogoMarca.DoesNotExist:
+            return None
+        
     def __str__(self):
         return f"{self.marca} {self.modello}"
     
@@ -100,6 +107,17 @@ class FotoAuto(models.Model):
         
     def __str__(self):
         return f"Foto di {self.auto}"
+
+class LogoMarca(models.Model):
+    marca = models.CharField(max_length=50, unique=True)
+    logo = models.ImageField(upload_to='auto/loghi/')
+
+    class Meta:
+        verbose_name_plural = "Loghi Marche"
+        ordering = ['marca']
+
+    def __str__(self):
+        return self.marca
     
 class RichiestaInfo(models.Model):
     auto = models.ForeignKey('Auto', on_delete=models.CASCADE, related_name='richieste')

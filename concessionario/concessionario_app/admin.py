@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Auto, Preferito, Ordine, FotoAuto, RichiestaInfo
+from .models import Auto, Preferito, Ordine, FotoAuto, RichiestaInfo, LogoMarca
 
 # Register your models here.
 
@@ -15,3 +15,4 @@ admin.site.register(Preferito)
 admin.site.register(Ordine)
 admin.site.register(FotoAuto)
 admin.site.register(RichiestaInfo)
+admin.site.register(LogoMarca)

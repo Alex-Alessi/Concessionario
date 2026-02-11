@@ -1,11 +1,86 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Login{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/login.css' %}">
+{% endblock %}
+
 {% block content %}
-  <h1>Login</h1>
-    <form method="post">
-      {% csrf_token %} {{ form.non_field_errors }} {{form.as_p}}
-      <button type="submit">Accedi</button>
-    </form>
+  <div class="login-container-wrapper">
+    <div class="login-container">
+          <div class="car-container">
+              <div class="car">
+                  <div class="car-roof"></div>
+                  <div class="windshield"></div>
+                  <div class="car-body"></div>
+                  
+                  <div class="headlights-container">
+                      <div class="headlight" id="leftHeadlight">
+                          <div class="eyelid-top"></div>
+                          <div class="eyelid-bottom"></div>
+                          <div class="pupil" id="leftPupil"></div>
+                          <div class="wiper" id="leftWiper"></div>
+                      </div>
+                      <div class="headlight" id="rightHeadlight">
+                          <div class="eyelid-top"></div>
+                          <div class="eyelid-bottom"></div>
+                          <div class="pupil" id="rightPupil"></div>
+                          <div class="wiper" id="rightWiper"></div>
+                      </div>
+                  </div>
+
+                  <div class="grille">
+                      <div class="grille-bar"></div>
+                      <div class="grille-bar"></div>
+                      <div class="grille-bar"></div>
+                      <div class="grille-bar"></div>
+                      <div class="grille-bar"></div>
+                  </div>
+                  <div class="wheels-container">
+                    <div class="wheel-sx"></div>
+                    <div class="wheel-dx"></div>
+                  </div>
+              </div>
+          </div>
+
+          <h2>Benvenuto</h2>
+          <p class="subtitle">Accedi al tuo account</p>
+
+          <form method="post" id="loginForm">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-error">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+            <div class="form-group">
+              {{ form.username.label_tag }}
+              {{ form.username }}
+              {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+              {{ form.password.label_tag }}
+              {{ form.password }}
+              {{ form.password.errors }}
+            </div>
+
+              <button type="submit">Accedi</button>
+
+              <div class="forgot-password">
+                  <a href="#" onclick="event.preventDefault(); alert('Funzionalità di recupero password');">
+                      Hai dimenticato la password?
+                  </a>
+              </div>
+          </form>
+      </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'accounts/js/login.js' %}"></script>
 {% endblock %}

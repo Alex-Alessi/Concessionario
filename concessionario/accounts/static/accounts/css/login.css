@@ -307,3 +307,8 @@ button:active {
     text-align: center;
     font-size: 14px;
 }
+
+.form-error ul {
+    list-style: none;
+    padding: 0;
+}

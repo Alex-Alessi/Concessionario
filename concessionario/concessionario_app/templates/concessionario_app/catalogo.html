@@ -39,7 +39,8 @@
                         </p>
                         <div class="filtri-actions">
                             <button type="submit" class="btn-filtra">Filtra</button>
-                            <a href="{% url 'catalogo' %}" class="btn-reset">Reset</a>
+                            {% comment %} <a href="{% url 'catalogo' %}" class="btn-reset">Reset</a> {% endcomment %}
+                            <button type="reset" class="btn-reset">Reset</button>
                         </div>
                     </div>
                 </form>
@@ -48,28 +49,50 @@
     </div>
     
     <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
         const toggle = document.getElementById("toggle-filtri");
-        const dropdown = document.querySelector(".filtri-dropdown");
         const wrapper = document.querySelector(".filtri-wrapper");
         const layout = document.querySelector(".layout-on-top");
-    
+        const form = document.querySelector(".filtri-form");
+        const prezzoMin = document.getElementById("id_prezzo_min");
+        const prezzoMax = document.getElementById("id_prezzo_max");
+
         toggle.addEventListener("click", () => {
             wrapper.classList.toggle("aperto");
             layout.classList.toggle("aperto");
         });
 
-        document.querySelectorAll('.prezzo-wrapper input').forEach(input => {
+        function toggleEuro(input) {
             const wrapper = input.closest('.prezzo-wrapper');
+            wrapper.classList.toggle('has-value', input.value.trim() !== '');
+        }
 
-            function toggleEuro() {
-                wrapper.classList.toggle('has-value', input.value.trim() !== '');
-            }
-
-            input.addEventListener('input', toggleEuro);
-            toggleEuro();
+        document.querySelectorAll('.prezzo-wrapper input').forEach(input => {
+            input.addEventListener('input', () => toggleEuro(input));
+            toggleEuro(input);
         });
 
+        form.addEventListener("reset", function () {
+            setTimeout(() => {
+                document.querySelectorAll('.prezzo-wrapper input')
+                    .forEach(input => toggleEuro(input));
+
+                prezzoMax.removeAttribute("min"); // resetta anche il min dinamico
+            }, 0);
+        });
+
+        prezzoMin.addEventListener("input", function() {
+            if (prezzoMin.value) {
+                prezzoMax.min = prezzoMin.value;
+            } else {
+                prezzoMax.removeAttribute("min");
+            }
+        });
+
+    });
     </script>
+
     
     <h2>
         <a href="?order={{ next_order }}" class="order-label">
@@ -115,3 +138,4 @@
     <h2 class="favourites-label">Le più amate</h2>
     {% include "concessionario_app/carousel_preferite.html" %}
 {% endblock %}
+

@@ -18,17 +18,18 @@ class FiltriCatalogoForm(forms.Form):
     alimentazione = forms.ChoiceField(required=False, choices=[('', 'Alimentazione')] + ALIMENTAZIONE_CHOICES, label="Alimentazione" )
     condizioni = forms.ChoiceField(required=False, choices=[('', 'Condizione')] + CONDIZIONI_CHOICES, label="Condizione")
     prezzo_min = forms.IntegerField(required=False, label="Prezzo minimo", widget=forms.NumberInput(attrs={'placeholder': '€ min', 'min':'1'}))
-    prezzo_max = forms.IntegerField(required=False, label="Prezzo massimo", widget=forms.NumberInput(attrs={'placeholder': '€ max', 'min':'Prezzo minimo'}))
+    prezzo_max = forms.IntegerField(required=False, label="Prezzo massimo", widget=forms.NumberInput(attrs={'placeholder': '€ max'}))
 
     def clean(self):
         cleaned_data = super().clean()
         prezzo_min = cleaned_data.get("prezzo_min")
         prezzo_max = cleaned_data.get("prezzo_max")
 
-        if prezzo_min and prezzo_max and prezzo_max < prezzo_min:
-            raise forms.ValidationError(
-                "Il prezzo massimo non può essere inferiore al prezzo minimo."
-            )
+        if prezzo_min is not None and prezzo_max is not None:
+            if prezzo_max < prezzo_min:
+                self.add_error("prezzo_max",
+                    "Il prezzo massimo non può essere inferiore al prezzo minimo."
+                )
 
         return cleaned_data
 

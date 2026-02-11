@@ -22,6 +22,7 @@
                             <div class="modern-carousel-item-text">
                                 <p class="car-brand">{{ auto.marca }} {{ auto.modello }}</p>
                                 <p class="car-price">€ {{ auto.prezzo|floatformat:2 }}</p>
+                                <p class="car-description">{{auto.descrizione}}</p>
                             </div>
                             {% if auto.get_logo %}
                                 <div class="modern-carousel-item-logo">

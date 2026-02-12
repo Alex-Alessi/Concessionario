@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, RecupPassword, ChangePassword
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Cliente
+from django.contrib.auth.views import PasswordResetView 
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -58,3 +61,12 @@ def register_view(request):
     else:
         form=RegistrationForm()
     return render(request, "accounts/register.html", {"form": form})
+
+
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'accounts/recup_password.html'
+    email_template_name = 'accounts/email_template_name.html'
+    subject_template_name = 'accounts/subject_template_name.txt'
+    success_message = "Dovresti ricevere a breve un’email con le istruzioni per reimpostare la tua password. "\
+        "Se non ricevi l’email, controlla di aver inserito correttamente l’indirizzo e/o verifica la cartella spam."
+    success_url = reverse_lazy('login')

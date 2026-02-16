@@ -102,26 +102,43 @@
     <div class="carousel">
         <div class="carousel__inner">
             {% for a in nuove %}
+
+
             <div class="carousel__box">
-                <a href="{% url 'dettaglio_auto' a.pk %}">
-                    {% if a.foto_set.first %}
-                        <img src="{{ a.foto_set.first.foto.url }}" alt="{{ a.marca }} {{ a.modello }}">
-                    {% else %}
-                        <p>📷 Nessuna foto</p>
-                    {% endif %}
-                </a>
-                <p>{{ a.marca }} {{ a.modello }} - €{{ a.prezzo }}</p>
-                <form method="post" action="{% url 'toggle_preferito' a.pk %}">
-                    {% csrf_token %}
-                    <button type="submit">
-                        {% if a.pk in preferiti_ids %}
-                            ❤️
+                <a href="{% url 'dettaglio_auto' a.pk %}" class="car-card__link">
+                    <div class="car-card__image-wrapper">
+                        {% if a.foto_set.first %}
+                            <img src="{{ a.foto_set.first.foto.url }}" alt="{{ a.marca }} {{ a.modello }}" class="car-card__image">
                         {% else %}
-                            🤍
+                            <div class="car-card__no-image">
+                                <span class="car-card__no-image-icon">📷</span>
+                                <span class="car-card__no-image-text">Nessuna foto</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="car-card__content">
+                        <div class="car-card__info">
+                            <h3 class="car-card__title">{{ a.marca }} {{ a.modello }}</h3>
+                            <p class="car-card__price">€{{ a.prezzo }}</p>
+                        </div>
+                        <div class="car-card__logo">
+                            <img src="{{ a.get_logo.url }}" alt="{{ a.marca }}">
+                        </div>
+                    </div>
+                </a>
+                <form method="post" action="{% url 'toggle_preferito' a.pk %}" class="car-card__favorite-form">
+                    {% csrf_token %}
+                    <button type="submit" class="car-card__favorite-btn" aria-label="Aggiungi ai preferiti">
+                        {% if a.pk in preferiti_ids %}
+                            <span class="heart-icon filled">❤️</span>
+                        {% else %}
+                            <span class="heart-icon">🤍</span>
                         {% endif %}
                     </button>
                 </form>
             </div>
+
+
             {% endfor %}
         </div>
         <button type="button" class="carousel__control carousel__control--left">

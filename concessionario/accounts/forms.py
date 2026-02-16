@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordResetForm
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -35,15 +36,3 @@ class RegistrationForm(forms.Form):
 
         if password != password2:
             self.add_error('password2', "Le password non coincidono")
-
-class RecupPassword(forms.Form):
-    email = forms.EmailField()
-
-    def check_exists(self):
-        email = self.cleaned_data['email']
-        if not User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Email non registrata")
-        return email
-    
-class ChangePassword(forms.Form):
-    password = forms.CharField(widget=forms.PasswordInput)

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import LoginForm, RegistrationForm, RecupPassword, ChangePassword
+from .forms import LoginForm, RegistrationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Cliente
@@ -69,4 +69,4 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     subject_template_name = 'accounts/subject_template_name.txt'
     success_message = "Dovresti ricevere a breve un’email con le istruzioni per reimpostare la tua password. "\
         "Se non ricevi l’email, controlla di aver inserito correttamente l’indirizzo e/o verifica la cartella spam."
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('password_reset_complete')

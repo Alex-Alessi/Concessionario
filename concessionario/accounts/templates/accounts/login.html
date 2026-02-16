@@ -72,7 +72,7 @@
               <button type="submit">Accedi</button>
 
               <div class="forgot-password">
-                  <a href="#" onclick="event.preventDefault(); alert('Funzionalità di recupero password');">
+                  <a href="{% url 'password_reset' %}">
                       Hai dimenticato la password?
                   </a>
               </div>

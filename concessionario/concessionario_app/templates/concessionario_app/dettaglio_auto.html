@@ -3,64 +3,152 @@
 {% block title %}{{auto.marca}} {{auto.modello}}{% endblock %}
 
 {% block content %}
-<h1>{{auto.marca}} {{auto.modello}}</h1>
-{% if auto.foto_set.all %}
-    <div class="galleria">
-        {% for foto in auto.foto_set.all %}
-            <img src="{{ foto.foto.url }}" width="300">
-        {% endfor %}
+
+<div class="detail-hero">
+  <div class="detail-layout" style="padding-top:0; padding-bottom:0;">
+    <div class="detail-breadcrumb">
+      <a href="{% url 'catalogo' %}">Catalogo</a>
+      <span>›</span>
+      <span>{{auto.marca}}</span>
+      <span>›</span>
+      <span style="color:#333; font-weight:600;">{{auto.modello}}</span>
     </div>
-{% endif %}
-    <ul>
-      {%for field in fields%} 
-        {% if field.name != 'id' and field.name != 'created_by' %} 
-          {%if field.name == 'prezzo' %}
-            <li>
-              <strong>{{field.verbose_name|capfirst}}:</strong> € {{auto|get_field_display:field.name}}
-            </li>
-          {%elif auto|attr:field.name == True %}
-          <li>
-            <strong>{{field.verbose_name|capfirst}}:</strong> ✔
-          </li>
-          {%elif auto|attr:field.name == False %}
-          <li>
-            <strong>{{field.verbose_name|capfirst}}:</strong> ✖
-          </li>
-          {%else%}
-          <li>
-            <strong>{{field.verbose_name|capfirst}}:</strong> {{auto|get_field_display:field.name}}
-          </li>
-          {%endif%} 
-        {%endif%} 
-      {%endfor%}
-      {% if user.is_authenticated and user.cliente %}
-      <form method="post" action="{% url 'toggle_preferito' auto.pk %}">
-        {% csrf_token %}
-        <button type="submit">
-          {% if is_preferito %}
-            ❤️ Rimuovi dai preferiti
+    <div></div>
+  </div>
+
+  <div class="detail-layout">
+
+    <!-- Galleria -->
+    <div class="detail-gallery">
+      {% if auto.foto_set.all %}
+        <div class="gallery-main" id="galleryMain">
+          {% if auto.disponibilita %}
+            <span class="availability-badge available">✔ Disponibile</span>
           {% else %}
-            🤍 Aggiungi ai preferiti
+            <span class="availability-badge sold">✖ Non disponibile</span>
           {% endif %}
-        </button>
-      </form>
+          <img id="mainImg" src="{{ auto.foto_set.all.0.foto.url }}" alt="{{auto.marca}} {{auto.modello}}">
+        </div>
+        {% if auto.foto_set.all|length > 1 %}
+        <div class="gallery-thumbnails">
+          {% for foto in auto.foto_set.all %}
+          <div class="gallery-thumb {% if forloop.first %}active{% endif %}"
+               onclick="switchPhoto('{{ foto.foto.url }}', this)">
+            <img src="{{ foto.foto.url }}" alt="foto {{forloop.counter}}">
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% else %}
+        <div class="gallery-main">
+          {% if auto.disponibilita %}
+            <span class="availability-badge available">✔ Disponibile</span>
+          {% else %}
+            <span class="availability-badge sold">✖ Non disponibile</span>
+          {% endif %}
+          <div class="gallery-no-image">
+            <span>🚗</span>
+            <span>Nessuna foto disponibile</span>
+          </div>
+        </div>
       {% endif %}
-      {% if user.is_authenticated and user.cliente and auto.disponibilita %}
-      <a href="{% url 'acquista_auto' auto.pk %}">
-        <button>🛒 Acquista</button>
-      </a>
-      {% endif %}
-      <a href="{% url 'catalogo' %}">Torna al catalogo</a>
-    </ul>
-    <hr>
+    </div>
 
-<h3>Richiedi informazioni</h3>
+    <!-- Pannello destro -->
+    <div class="detail-panel">
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Invia richiesta</button>
-</form>
+      <div class="detail-header-card">
+        <div class="detail-brand-row">
+          {% if auto.brand_logo %}
+          <div class="detail-brand-logo">
+            <img src="{{ auto.brand_logo.url }}" alt="{{auto.marca}}">
+          </div>
+          {% endif %}
+          <span class="detail-brand-name">{{ auto.marca }}</span>
+        </div>
+        <h1 class="detail-model-name">{{ auto.modello }}</h1>
+        <div class="detail-price-row">
+          <div class="detail-price"><sup>€</sup>{{ auto.prezzo|floatformat:0 }}</div>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        {% if user.is_authenticated and user.cliente and auto.disponibilita %}
+        <a href="{% url 'acquista_auto' auto.pk %}" class="btn-buy">
+          🛒 Acquista ora
+        </a>
+        {% endif %}
+
+        {% if user.is_authenticated and user.cliente %}
+        <form method="post" action="{% url 'toggle_preferito' auto.pk %}" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="btn-favorite {% if is_preferito %}is-favorite{% endif %}">
+            {% if is_preferito %}❤️ Rimuovi dai preferiti{% else %}🤍 Aggiungi ai preferiti{% endif %}
+          </button>
+        </form>
+        {% endif %}
+      </div>
+
+      <!-- Specifiche tecniche -->
+      <div class="detail-specs-card">
+        <p class="specs-title">Specifiche</p>
+        <div class="specs-grid">
+          {% for field in fields %}
+            {% if field.name != 'id' and field.name != 'created_by' and field.name != 'prezzo' %}
+              <div class="spec-item {% if forloop.counter > 4 %}extra-spec hidden-spec{% endif %}">
+                <span class="spec-label">{{ field.verbose_name|capfirst }}</span>
+                <span class="spec-value">
+                  {% if auto|attr:field.name == True %}
+                    <span class="check">✔</span>
+                  {% elif auto|attr:field.name == False %}
+                    <span class="cross">✖</span>
+                  {% else %}
+                    {{ auto|get_field_display:field.name }}
+                  {% endif %}
+                </span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% if fields|length > 4 %}
+          <button id="toggle-specs" class="toggle-btn">Mostra tutte</button>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Sezione bassa -->
+<div class="detail-bottom" style="padding: 0 24px; max-width:1200px; margin: 40px auto 80px;">
+  <div class="detail-form-card">
+    <h3 class="form-section-title">Richiedi informazioni</h3>
+    <p class="form-section-sub">Compila il modulo, ti risponderemo al più presto.</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-row">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <ul class="errorlist">
+            {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn-invia">✉️ Invia richiesta</button>
+    </form>
+  </div>
+  <div></div>
+</div>
 
 
 {% endblock %}

@@ -21,6 +21,15 @@
     <!-- Galleria -->
     <div class="detail-gallery">
       {% if auto.foto_set.all %}
+        <div class="gallery-thumbnails">
+          {% for foto in auto.foto_set.all %}
+          <div class="gallery-thumb {% if forloop.first %}active{% endif %}"
+               onclick="switchPhoto('{{ foto.foto.url }}', this)">
+            <img src="{{ foto.foto.url }}" alt="foto {{forloop.counter}}">
+          </div>
+          {% endfor %}
+        </div>
+
         <div class="gallery-main" id="galleryMain">
           {% if auto.disponibilita %}
             <span class="availability-badge available">✔ Disponibile</span>
@@ -30,14 +39,7 @@
           <img id="mainImg" src="{{ auto.foto_set.all.0.foto.url }}" alt="{{auto.marca}} {{auto.modello}}">
         </div>
         {% if auto.foto_set.all|length > 1 %}
-        <div class="gallery-thumbnails">
-          {% for foto in auto.foto_set.all %}
-          <div class="gallery-thumb {% if forloop.first %}active{% endif %}"
-               onclick="switchPhoto('{{ foto.foto.url }}', this)">
-            <img src="{{ foto.foto.url }}" alt="foto {{forloop.counter}}">
-          </div>
-          {% endfor %}
-        </div>
+        
         {% endif %}
       {% else %}
         <div class="gallery-main">
@@ -93,24 +95,22 @@
       <div class="detail-specs-card">
         <p class="specs-title">Specifiche</p>
         <div class="specs-grid">
-          {% for field in fields %}
-            {% if field.name != 'id' and field.name != 'created_by' and field.name != 'prezzo' %}
-              <div class="spec-item {% if forloop.counter > 4 %}extra-spec hidden-spec{% endif %}">
-                <span class="spec-label">{{ field.verbose_name|capfirst }}</span>
-                <span class="spec-value">
-                  {% if auto|attr:field.name == True %}
-                    <span class="check">✔</span>
-                  {% elif auto|attr:field.name == False %}
-                    <span class="cross">✖</span>
-                  {% else %}
-                    {{ auto|get_field_display:field.name }}
-                  {% endif %}
-                </span>
-              </div>
-            {% endif %}
+          {% for field in specs %}
+            <div class="spec-item {% if forloop.counter > 4 %}extra-spec hidden-spec{% endif %}">
+              <span class="spec-label">{{ field.verbose_name|capfirst }}</span>
+              <span class="spec-value">
+                {% if auto|attr:field.name == True %}
+                  <span class="check">✔</span>
+                {% elif auto|attr:field.name == False %}
+                  <span class="cross">✖</span>
+                {% else %}
+                  {{ auto|get_field_display:field.name }}
+                {% endif %}
+              </span>
+            </div>
           {% endfor %}
         </div>
-        {% if fields|length > 4 %}
+        {% if specs|length > 4 %}
           <button id="toggle-specs" class="toggle-btn">Mostra tutte</button>
         {% endif %}
       </div>
@@ -120,7 +120,7 @@
 </div>
 
 <!-- Sezione bassa -->
-<div class="detail-bottom" style="padding: 0 24px; max-width:1200px; margin: 40px auto 80px;">
+<div class="detail-bottom">
   <div class="detail-form-card">
     <h3 class="form-section-title">Richiedi informazioni</h3>
     <p class="form-section-sub">Compila il modulo, ti risponderemo al più presto.</p>

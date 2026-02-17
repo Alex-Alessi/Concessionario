@@ -53,6 +53,11 @@ def catalogo(request):
 def dettaglio_auto(request, pk):
     auto = get_object_or_404(Auto, pk=pk)
     fields = auto._meta.fields
+    excludes = ['id', 'created_by', 'prezzo', 'video']
+    specs = [
+        f for f in auto._meta.fields
+        if f.name not in excludes
+    ]
 
     is_preferito = False
     if request.user.is_authenticated and hasattr(request.user, 'cliente'):
@@ -79,6 +84,7 @@ def dettaglio_auto(request, pk):
             'fields': fields,
             'is_preferito': is_preferito,
             'form': form,
+            'specs': specs,
         }
     return render(request, 'concessionario_app/dettaglio_auto.html', context)
 

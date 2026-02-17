@@ -53,7 +53,7 @@ def catalogo(request):
 def dettaglio_auto(request, pk):
     auto = get_object_or_404(Auto, pk=pk)
     fields = auto._meta.fields
-    excludes = ['id', 'created_by', 'prezzo', 'video']
+    excludes = ['id', 'created_by', 'prezzo', 'video', 'descrizione', 'marca', 'modello']
     specs = [
         f for f in auto._meta.fields
         if f.name not in excludes

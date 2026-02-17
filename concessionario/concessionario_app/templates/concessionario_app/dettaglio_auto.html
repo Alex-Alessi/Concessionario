@@ -30,13 +30,21 @@
           {% endfor %}
         </div>
 
-        <div class="gallery-main" id="galleryMain">
-          {% if auto.disponibilita %}
-            <span class="availability-badge available">✔ Disponibile</span>
-          {% else %}
-            <span class="availability-badge sold">✖ Non disponibile</span>
-          {% endif %}
-          <img id="mainImg" src="{{ auto.foto_set.all.0.foto.url }}" alt="{{auto.marca}} {{auto.modello}}">
+        <div style="gap: 30px;display: flex;flex-direction: column;">
+          <div class="gallery-main" id="galleryMain">
+            {% if auto.disponibilita %}
+              <span class="availability-badge available">✔ Disponibile</span>
+            {% else %}
+              <span class="availability-badge sold">✖ Non disponibile</span>
+            {% endif %}
+            <img id="mainImg" src="{{ auto.foto_set.all.0.foto.url }}" alt="{{auto.marca}} {{auto.modello}}">
+          </div>
+
+          <div class="detail-description-card">
+            <p class="description-title">Descrizione</p>
+            <p>{{auto.descrizione}}</p>
+          </div>
+
         </div>
         {% if auto.foto_set.all|length > 1 %}
         
@@ -61,11 +69,13 @@
 
       <div class="detail-header-card">
         <div class="detail-brand-row">
-          {% if auto.brand_logo %}
-          <div class="detail-brand-logo">
-            <img src="{{ auto.brand_logo.url }}" alt="{{auto.marca}}">
-          </div>
-          {% endif %}
+          {% with logo=auto.get_logo %}
+            {% if logo %}
+              <div class="detail-brand-logo">
+                <img src="{{ logo.url }}" alt="{{ auto.marca }}">
+              </div>
+            {% endif %}
+          {% endwith %}
           <span class="detail-brand-name">{{ auto.marca }}</span>
         </div>
         <h1 class="detail-model-name">{{ auto.modello }}</h1>

@@ -16,29 +16,31 @@ def home(request):
 def catalogo(request):
     form = FiltriCatalogoForm(request.GET or None)
     auto=Auto.objects.filter(disponibilita=True)
+
+    auto_filtrate=auto
     
 
     if form.is_valid():
         if form.cleaned_data.get('marca'):
-            auto = auto.filter(marca__icontains=form.cleaned_data['marca'])
+            auto_filtrate = auto_filtrate.filter(marca__icontains=form.cleaned_data['marca'])
 
         if form.cleaned_data.get('categoria'):
-            auto = auto.filter(categoria=form.cleaned_data['categoria'])
+            auto_filtrate = auto_filtrate.filter(categoria=form.cleaned_data['categoria'])
 
         if form.cleaned_data.get('alimentazione'):
-            auto = auto.filter(alimentazione=form.cleaned_data['alimentazione'])
+            auto_filtrate = auto_filtrate.filter(alimentazione=form.cleaned_data['alimentazione'])
             
         if form.cleaned_data.get('condizioni'):
-            auto = auto.filter(condizioni=form.cleaned_data['condizioni'])
+            auto_filtrate = auto_filtrate.filter(condizioni=form.cleaned_data['condizioni'])
             
         if form.cleaned_data.get('prezzo_min'):
-            auto = auto.filter(prezzo__gte=form.cleaned_data['prezzo_min'])
+            auto_filtrate = auto_filtrate.filter(prezzo__gte=form.cleaned_data['prezzo_min'])
             
         if form.cleaned_data.get('prezzo_max'):
-            auto = auto.filter(prezzo__lte=form.cleaned_data['prezzo_max'])
+            auto_filtrate = auto_filtrate.filter(prezzo__lte=form.cleaned_data['prezzo_max'])
     
     current_order = request.GET.get("order", "recent")
-    nuove, order_label, next_order = ordina(auto, current_order)          
+    nuove, order_label, next_order = ordina(auto_filtrate, current_order)          
 
     preferite = (auto.annotate(num_preferiti=Count('preferito')).filter(num_preferiti__gt=0).order_by('-num_preferiti')[:10])
 

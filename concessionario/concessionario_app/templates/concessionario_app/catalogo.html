@@ -92,18 +92,21 @@
     });
     </script>
 
-    
+    {% if nuove %}
     <h2>
         <a href="?order={{ next_order }}" class="order-label">
             Auto ordinate per: {{ order_label }}
         </a>
     </h2>
+    {% else %}
+    <h2 style="display:none">
+        Auto ordinate per: {{ order_label }}
+    </h2>
+    {% endif %}
     {% if nuove %}
     <div class="carousel">
         <div class="carousel__inner">
             {% for a in nuove %}
-
-
             <div class="carousel__box">
                 <a href="{% url 'dettaglio_auto' a.pk %}" class="car-card__link">
                     <div class="car-card__image-wrapper">
@@ -149,7 +152,7 @@
         </button>
     </div>
     {% else %}
-    <p>Nessuna auto disponibile al momento.</p>
+    <p style="text-align: center; font-size: large;">Nessuna auto disponibile al momento.</p>
     {% endif %}
     <h2 class="favourites-label">Le più amate</h2>
     {% include "concessionario_app/carousel_preferite.html" %}

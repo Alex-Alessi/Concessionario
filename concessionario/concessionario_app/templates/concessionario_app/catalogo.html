@@ -39,7 +39,7 @@
                         </p>
                         <div class="filtri-actions">
                             <button type="submit" class="btn-filtra">Filtra</button>
-                            <button type="reset" class="btn-reset">Reset</button>
+                            <a href="{% url 'catalogo' %}" class="btn-reset">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -70,15 +70,6 @@
         document.querySelectorAll('.prezzo-wrapper input').forEach(input => {
             input.addEventListener('input', () => toggleEuro(input));
             toggleEuro(input);
-        });
-
-        form.addEventListener("reset", function () {
-            setTimeout(() => {
-                document.querySelectorAll('.prezzo-wrapper input')
-                    .forEach(input => toggleEuro(input));
-
-                prezzoMax.removeAttribute("min"); // resetta anche il min dinamico
-            }, 0);
         });
 
         prezzoMin.addEventListener("input", function() {

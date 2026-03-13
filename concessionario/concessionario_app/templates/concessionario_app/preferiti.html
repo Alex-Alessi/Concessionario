@@ -3,21 +3,60 @@
 {% block title %}Preferiti{% endblock %}
 
 {% block content %}
-  <h1> I miei preferiti </h1>
+<div class="glass-page-wrapper">
+    <div class="glass-header">
+        <h1 class="page-title">I miei preferiti</h1>
+        <a href="{% url 'catalogo' %}" class="btn-glass-secondary">← Torna al catalogo</a>
+    </div>
+
     {% if preferiti.exists %}
-    <ul>
-        {% for preferito in preferiti %}
-            <li> <a href="{% url 'dettaglio_auto' preferito.auto.pk %}"> {{preferito.auto.marca}} {{preferito.auto.modello}} </a> </li> 
-            <form method="post" action="{% url 'toggle_preferito' preferito.auto.pk %}">
-                {% csrf_token %}
-                <button type="submit">
-                    ❤️ Rimuovi dai preferiti  
-                </button>
-            </form>
-        {% endfor %}
-    </ul>
+        <div class="favorites-grid">
+            {% for preferito in preferiti %}
+                <div class="glass-card">
+                    
+                    <div class="card-image-container">
+                        {% with foto_principale=preferito.auto.foto_set.first %}
+                            {% if foto_principale %}
+                                <img src="{{ foto_principale.foto.url }}" alt="{{ preferito.auto.marca }} {{ preferito.auto.modello }}" class="car-image">
+                            {% else %}
+                                <div class="car-image-placeholder">
+                                    <span>Nessuna immagine</span>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                        
+                        {% if preferito.auto.get_logo %}
+                            <img src="{{ preferito.auto.get_logo.url }}" alt="Logo {{ preferito.auto.marca }}" class="brand-logo-overlay">
+                        {% endif %}
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-info">
+                            <a href="{% url 'dettaglio_auto' preferito.auto.pk %}" class="car-title">
+                                {{ preferito.auto.marca }} {{ preferito.auto.modello }}
+                            </a>
+                            <div class="car-details">
+                                <span class="car-price">€{{ preferito.auto.prezzo }}</span>
+                                <span class="car-year">{{ preferito.auto.immatricolazione|date:"Y" }}</span>
+                            </div>
+                        </div>
+                        
+                        <form method="post" action="{% url 'toggle_preferito' preferito.auto.pk %}" class="form-remove">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-glass-danger">
+                                <span class="heart-icon">❤️</span> Rimuovi
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
-    <h2> Non ci sono auto nei preferiti </h2>
+        <div class="glass-empty-state">
+            <h2>Nessuna auto nei preferiti</h2>
+            <p>Esplora il catalogo e salva i veicoli che ti interessano per ritrovarli qui.</p>
+        </div>
     {% endif %}
-    <a href="{% url 'catalogo' %}">Torna al catalogo</a>
+</div>
 {% endblock %}

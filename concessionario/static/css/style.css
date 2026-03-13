@@ -62,10 +62,12 @@
 
 /* BUTTONS */
 .btn-primary {
-  background: #0066ff;
+  background: #0853c3;
   color: #fff !important;
   padding: 8px 16px;
-  border-radius: 6px;
+  border-radius: 980px;
+  cursor: pointer;
+  border-width: 1px;
 }
 
 .btn-outline {
@@ -946,7 +948,10 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
+}
+
+.favorites-grid .glass-card{
+    cursor: pointer;
 }
 
 .glass-card:hover {
@@ -1606,6 +1611,156 @@
   .detail-specs-card  { animation: fadeUp 0.5s ease 0.3s both; }
   .detail-form-card   { animation: fadeUp 0.5s ease 0.2s both; }
 
+/* PAGINA ACQUISTO */
+
+/* Layout a doppia colonna per il checkout */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.checkout-grid .glass-card checkout-form-card{
+    background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkout-grid .glass-card:hover {
+  transform: translateY(0px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* sezioni */
+.checkout-section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-top: 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 16px;
+}
+
+/* riepilogo */
+.checkout-summary {
+  padding: 32px;
+}
+
+.summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.summary-label {
+  color: #86868b;
+}
+
+.summary-value {
+  font-weight: 500;
+  color: #1d1d1f;
+}
+
+.total-row {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.total-row .summary-label {
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.total-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0071e3;
+}
+
+.checkout-image-wrapper {
+  margin-top: 32px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.checkout-car-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.checkout-form-card {
+  padding: 32px;
+}
+
+.django-form-fields p {
+  margin-bottom: 20px;
+}
+
+.django-form-fields label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #1d1d1f;
+  font-size: 0.95rem;
+}
+
+.django-form-fields input,
+.django-form-fields select,
+.django-form-fields textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-size: 1rem;
+  color: #1d1d1f;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.django-form-fields input:focus,
+.django-form-fields select:focus,
+.django-form-fields textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: #0071e3;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+}
+
+.checkout-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.checkout-btn {
+  font-size: 1.05rem;
+}
 
 /* MESSAGGI */
 
@@ -1727,6 +1882,10 @@
     .contenuto-filtri p {
         width: 100%;
     }
+
+    .checkout-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {

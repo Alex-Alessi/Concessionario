@@ -3,20 +3,60 @@
 {% block title %}Acquista {{ auto.marca }} {{ auto.modello }}{% endblock %}
 
 {% block content %}
-    <h1>Acquista {{ auto.marca }} {{ auto.modello }}</h1>
+<div class="glass-page-wrapper">
     
-    <h2>Riepilogo:</h2>
-    <ul>
-        <li><strong>Auto:</strong> {{ auto.marca }} {{ auto.modello }}</li>
-        <li><strong>Prezzo:</strong> €{{ auto.prezzo }}</li>
-        <li><strong>Condizioni:</strong> {{ auto.get_condizioni_display }}</li>
-    </ul>
-    
-    <h2>Completa l'acquisto:</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">✅ Conferma acquisto</button>
-        <a href="{% url 'dettaglio_auto' auto.pk %}">❌ Annulla</a>
-    </form>
+    <div class="glass-header">
+        <h1 class="page-title">Checkout di Acquisto</h1>
+    </div>
+
+    <div class="checkout-grid">
+        
+        <div class="glass-card checkout-summary">
+            <h2 class="checkout-section-title">Riepilogo Ordine</h2>
+            
+            <div class="summary-details">
+                <div class="summary-item">
+                    <span class="summary-label">Veicolo</span>
+                    <span class="summary-value">{{ auto.marca }} {{ auto.modello }}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Condizioni</span>
+                    <span class="summary-value">{{ auto.get_condizioni_display }}</span>
+                </div>
+                <div class="summary-item total-row">
+                    <span class="summary-label">Totale da pagare</span>
+                    <span class="summary-value total-price">€{{ auto.prezzo }}</span>
+                </div>
+            </div>
+            
+            {% with foto_principale=auto.foto_set.first %}
+                {% if foto_principale %}
+                    <div class="checkout-image-wrapper">
+                        <img src="{{ foto_principale.foto.url }}" alt="Auto" class="checkout-car-image">
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="glass-card checkout-form-card">
+            <h2 class="checkout-section-title">Dettagli Consegna e Pagamento</h2>
+            
+            <form method="post" class="glass-form">
+                {% csrf_token %}
+                
+                <div class="django-form-fields">
+                    {{ form.as_p }}
+                </div>
+                
+                <div class="checkout-actions">
+                    <a href="{% url 'dettaglio_auto' auto.pk %}" class="btn-glass-secondary">Annulla</a>
+                    <button type="submit" class="btn-primary checkout-btn">
+                        Conferma Ordine
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
 {% endblock %}
